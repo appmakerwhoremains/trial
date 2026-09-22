@@ -13,8 +13,10 @@ html = r"""
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <style>
 *{box-sizing:border-box}
+
 html,body{
     margin:0;
     padding:0;
@@ -23,6 +25,7 @@ html,body{
     font-family:Arial,Helvetica,sans-serif;
     overflow:hidden
 }
+
 button{
     font-family:inherit;
     -webkit-tap-highlight-color:transparent
@@ -39,6 +42,7 @@ button{
 }
 
 /* TOP BAR */
+
 .topbar{
     height:43px;
     display:flex;
@@ -46,6 +50,7 @@ button{
     justify-content:space-between;
     margin-bottom:4px;
 }
+
 .icon-btn{
     border:0;
     background:transparent;
@@ -58,7 +63,10 @@ button{
     align-items:center;
     justify-content:center;
 }
-.menu-btn{font-size:27px}
+
+.menu-btn{
+    font-size:27px
+}
 
 .history-top{
     border:1px solid #d79d58;
@@ -79,7 +87,10 @@ button{
 }
 
 /* CURRENT NUMBER */
-.current-area{text-align:center}
+
+.current-area{
+    text-align:center
+}
 
 .previous{
     height:24px;
@@ -115,6 +126,7 @@ button{
 }
 
 /* SPEAKER */
+
 .speaker-row{
     height:45px;
     display:flex;
@@ -134,6 +146,7 @@ button{
 }
 
 /* NEXT */
+
 .next-row{
     height:75px;
     display:flex;
@@ -160,6 +173,7 @@ button{
 }
 
 /* GRID */
+
 .number-grid{
     display:grid;
     grid-template-columns:repeat(10,1fr);
@@ -198,6 +212,7 @@ button{
 }
 
 /* STATUS */
+
 .status{
     text-align:center;
     height:21px;
@@ -207,6 +222,7 @@ button{
 }
 
 /* DRAWER */
+
 .overlay{
     position:fixed;
     inset:0;
@@ -259,12 +275,6 @@ button{
     border-bottom:1px solid #eee;
 }
 
-.section-title{
-    font-size:15px;
-    font-weight:800;
-    margin-bottom:9px;
-}
-
 .menu-action{
     width:100%;
     border:1px solid #ddd;
@@ -283,6 +293,7 @@ button{
 }
 
 /* HISTORY MODAL */
+
 .modal-wrap{
     position:fixed;
     inset:0;
@@ -342,7 +353,9 @@ button{
 }
 
 /* VERY SMALL PHONES */
+
 @media(max-width:380px){
+
     .app{
         padding:4px 6px
     }
@@ -400,14 +413,21 @@ button{
 <div class="app">
 
     <div class="topbar">
-        <button class="icon-btn menu-btn" id="menuButton" aria-label="Menu">☰</button>
 
-        <div class="brand">🎉 Kitty Housie</div>
+        <button class="icon-btn menu-btn" id="menuButton">
+            ☰
+        </button>
+
+        <div class="brand">
+            🎉 Kitty Housie
+        </div>
 
         <button class="history-top" id="historyButton">
             Number<br>History
         </button>
+
     </div>
+
 
     <div class="current-area">
 
@@ -416,7 +436,9 @@ button{
             <span class="prev-value" id="prevNumber">--</span>
         </div>
 
-        <div class="current-number" id="currentNumber">--</div>
+        <div class="current-number" id="currentNumber">
+            --
+        </div>
 
         <div class="current-name" id="currentName">
             Press NEXT to start
@@ -424,21 +446,29 @@ button{
 
     </div>
 
+
     <div class="speaker-row">
-        <button class="speaker" id="speakerButton" aria-label="Speak">
+
+        <button class="speaker" id="speakerButton">
             🔊
         </button>
+
     </div>
 
+
     <div class="next-row">
+
         <button class="next" id="nextButton">
             NEXT
         </button>
+
     </div>
+
 
     <div class="status" id="status">
         90 numbers remaining
     </div>
+
 
     <div class="number-grid" id="numberGrid"></div>
 
@@ -495,7 +525,7 @@ button{
 </div>
 
 
-<!-- HISTORY -->
+<!-- HISTORY MODAL -->
 
 <div class="modal-wrap" id="historyModal">
 
@@ -522,13 +552,15 @@ button{
 
 <script>
 
-const numbers = Array.from(
-    {length:90},
-    (_,i)=>i+1
-);
+const numbers =
+    Array.from(
+        {length:90},
+        (_,i) => i + 1
+    );
 
 
 const englishNumbers = {
+
 1:"One",
 2:"Two",
 3:"Three",
@@ -619,30 +651,44 @@ const englishNumbers = {
 88:"Eighty-eight",
 89:"Eighty-nine",
 90:"Ninety"
+
 };
 
 
 let calledNumbers = [];
+
 let currentNumber = null;
+
 let voiceType = "female";
-let speedLevel = 4;
+
+let speedLevel = 7;
+
 let speechGeneration = 0;
 
 
-const grid = document.getElementById("numberGrid");
+const grid =
+    document.getElementById(
+        "numberGrid"
+    );
 
 
-/* CREATE 1-90 GRID */
+/* CREATE GRID */
 
 numbers.forEach(num => {
 
-    const button = document.createElement("button");
+    const button =
+        document.createElement(
+            "button"
+        );
 
-    button.className = "number";
+    button.className =
+        "number";
 
-    button.textContent = num;
+    button.textContent =
+        num;
 
-    button.dataset.number = num;
+    button.dataset.number =
+        num;
 
     button.addEventListener(
         "click",
@@ -659,11 +705,13 @@ numbers.forEach(num => {
 function getRate(){
 
     return {
-        3:0.72,
-        4:0.82,
-        5:0.92,
-        6:1.03,
-        7:1.14
+
+        3:0.85,
+        4:0.95,
+        5:1.05,
+        6:1.15,
+        7:1.25
+
     }[speedLevel];
 
 }
@@ -673,19 +721,30 @@ function getRate(){
 
 function speak(text, generation){
 
-    if(!window.speechSynthesis) return;
+    if(!window.speechSynthesis){
+        return;
+    }
+
 
     const utterance =
-        new SpeechSynthesisUtterance(text);
+        new SpeechSynthesisUtterance(
+            text
+        );
 
-    utterance.lang = "en-IN";
 
-    utterance.rate = getRate();
+    utterance.lang =
+        "en-IN";
+
+
+    utterance.rate =
+        getRate();
+
 
     utterance.pitch =
         voiceType === "female"
         ? 1.08
         : 0.82;
+
 
     utterance.volume = 1;
 
@@ -693,30 +752,37 @@ function speak(text, generation){
     const voices =
         window.speechSynthesis.getVoices();
 
+
     let selected =
         voices.find(
             v =>
-            v.lang &&
-            v.lang.toLowerCase()
-            .startsWith("en-in")
+                v.lang &&
+                v.lang
+                .toLowerCase()
+                .startsWith("en-in")
         )
         ||
         voices.find(
             v =>
-            v.lang &&
-            v.lang.toLowerCase()
-            .startsWith("en")
+                v.lang &&
+                v.lang
+                .toLowerCase()
+                .startsWith("en")
         );
 
 
     if(selected){
-        utterance.voice = selected;
+        utterance.voice =
+            selected;
     }
 
 
     utterance.onend = () => {
 
-        if(generation !== speechGeneration){
+        if(
+            generation !==
+            speechGeneration
+        ){
             return;
         }
 
@@ -736,81 +802,116 @@ function announce(num){
 
     speechGeneration++;
 
+
     const generation =
         speechGeneration;
+
 
     window.speechSynthesis.cancel();
 
 
     /*
-       Example:
+       SINGLE DIGIT:
+       1  -> One
 
-       43
-
-       First:
-       Four
-
-       Then:
-       Three
-
-       Then:
-       Forty Three
+       DOUBLE DIGIT:
+       43 -> Four
+             Three
+             Forty-three
     */
-
-    const digits =
-        String(num)
-        .split("")
-        .map(
-            digit =>
-            englishNumbers[
-                Number(digit)
-            ]
-        );
-
-
-    const fullNumber =
-        englishNumbers[num];
 
 
     let sequence = [];
 
 
-    digits.forEach(word => {
+    if(num < 10){
 
-        sequence.push(word);
+        /*
+           IMPORTANT FIX:
+           Previously the digit word and
+           full number word were both
+           added, causing:
 
-    });
+           One
+           One
+
+           Now single digit speaks once.
+        */
+
+        sequence = [
+            englishNumbers[num]
+        ];
+
+    }
+    else{
+
+        const digits =
+            String(num)
+            .split("")
+            .map(
+                digit =>
+                    englishNumbers[
+                        Number(digit)
+                    ]
+            );
 
 
-    sequence.push(fullNumber);
+        sequence = [
+            ...digits,
+            englishNumbers[num]
+        ];
+
+    }
 
 
     let delay = 0;
 
 
-    sequence.forEach((word,index) => {
+    sequence.forEach(
+        (word,index) => {
 
-        setTimeout(() => {
+            setTimeout(
+                () => {
 
-            if(generation !== speechGeneration){
-                return;
-            }
+                    if(
+                        generation !==
+                        speechGeneration
+                    ){
+                        return;
+                    }
 
-            if(currentNumber !== num){
-                return;
-            }
 
-            speak(
-                word,
-                generation
+                    if(
+                        currentNumber !==
+                        num
+                    ){
+                        return;
+                    }
+
+
+                    speak(
+                        word,
+                        generation
+                    );
+
+                },
+                delay
             );
 
-        }, delay);
 
+            /*
+               Faster transition between
+               digit announcements while
+               keeping the words clear.
+            */
 
-        delay += 850;
+            delay +=
+                num < 10
+                ? 0
+                : 650;
 
-    });
+        }
+    );
 
 }
 
@@ -819,15 +920,12 @@ function announce(num){
 
 function callNumber(num){
 
-    /*
-       If already called:
-       Do not add it again.
-       Simply announce it again.
-    */
+    if(
+        calledNumbers.includes(num)
+    ){
 
-    if(calledNumbers.includes(num)){
-
-        currentNumber = num;
+        currentNumber =
+            num;
 
         updateDisplay();
 
@@ -840,7 +938,8 @@ function callNumber(num){
 
     calledNumbers.push(num);
 
-    currentNumber = num;
+    currentNumber =
+        num;
 
     updateDisplay();
 
@@ -855,7 +954,8 @@ function nextNumber(){
 
     const remaining =
         numbers.filter(
-            n => !calledNumbers.includes(n)
+            n =>
+                !calledNumbers.includes(n)
         );
 
 
@@ -881,7 +981,9 @@ function nextNumber(){
         remaining[randomIndex];
 
 
-    callNumber(randomNumber);
+    callNumber(
+        randomNumber
+    );
 
 }
 
@@ -903,7 +1005,9 @@ function updateDisplay(){
     ).textContent =
         currentNumber === null
         ? "Press NEXT to start"
-        : englishNumbers[currentNumber];
+        : englishNumbers[
+            currentNumber
+        ];
 
 
     const prev =
@@ -916,22 +1020,32 @@ function updateDisplay(){
 
     document.getElementById(
         "prevNumber"
-    ).textContent = prev;
+    ).textContent =
+        prev;
 
 
     document.getElementById(
         "status"
     ).textContent =
-        (90 - calledNumbers.length)
-        + " numbers remaining";
+        (
+            90 -
+            calledNumbers.length
+        )
+        +
+        " numbers remaining";
 
 
     document
-        .querySelectorAll(".number")
+        .querySelectorAll(
+            ".number"
+        )
         .forEach(button => {
 
             const n =
-                Number(button.dataset.number);
+                Number(
+                    button.dataset.number
+                );
+
 
             button.classList.remove(
                 "called",
@@ -942,13 +1056,17 @@ function updateDisplay(){
             if(
                 calledNumbers.includes(n)
             ){
+
                 button.classList.add(
                     "called"
                 );
+
             }
 
 
-            if(n === currentNumber){
+            if(
+                n === currentNumber
+            ){
 
                 button.classList.add(
                     "last"
@@ -965,7 +1083,9 @@ function updateDisplay(){
 
 function undo(){
 
-    if(!calledNumbers.length){
+    if(
+        !calledNumbers.length
+    ){
         return;
     }
 
@@ -1030,7 +1150,9 @@ function showHistory(){
     list.innerHTML = "";
 
 
-    if(!calledNumbers.length){
+    if(
+        !calledNumbers.length
+    ){
 
         list.innerHTML =
             '<div class="empty" style="grid-column:1/-1">No numbers called yet.</div>';
@@ -1050,17 +1172,26 @@ function showHistory(){
                         "div"
                     );
 
+
                 item.className =
                     "history-item";
 
-                item.textContent = n;
+
+                item.textContent =
+                    n;
+
 
                 item.title =
-                    (i === 0
+                    (
+                        i === 0
                         ? "Latest"
-                        : "")
-                    + " "
-                    + englishNumbers[n];
+                        : ""
+                    )
+                    +
+                    " "
+                    +
+                    englishNumbers[n];
+
 
                 list.appendChild(
                     item
@@ -1076,7 +1207,9 @@ function showHistory(){
         .getElementById(
             "historyModal"
         )
-        .classList.add("show");
+        .classList.add(
+            "show"
+        );
 
 }
 
@@ -1089,7 +1222,9 @@ function openMenu(){
         .getElementById(
             "menuOverlay"
         )
-        .classList.add("show");
+        .classList.add(
+            "show"
+        );
 
 }
 
@@ -1100,25 +1235,31 @@ function closeMenu(){
         .getElementById(
             "menuOverlay"
         )
-        .classList.remove("show");
+        .classList.remove(
+            "show"
+        );
 
 }
 
 
-/* NEXT BUTTON */
+/* NEXT */
 
 document
-    .getElementById("nextButton")
+    .getElementById(
+        "nextButton"
+    )
     .addEventListener(
         "click",
         nextNumber
     );
 
 
-/* SPEAKER BUTTON */
+/* SPEAKER */
 
 document
-    .getElementById("speakerButton")
+    .getElementById(
+        "speakerButton"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1137,10 +1278,12 @@ document
     );
 
 
-/* MENU BUTTON */
+/* MENU */
 
 document
-    .getElementById("menuButton")
+    .getElementById(
+        "menuButton"
+    )
     .addEventListener(
         "click",
         openMenu
@@ -1148,7 +1291,9 @@ document
 
 
 document
-    .getElementById("closeMenu")
+    .getElementById(
+        "closeMenu"
+    )
     .addEventListener(
         "click",
         closeMenu
@@ -1156,7 +1301,9 @@ document
 
 
 document
-    .getElementById("menuOverlay")
+    .getElementById(
+        "menuOverlay"
+    )
     .addEventListener(
         "click",
         closeMenu
@@ -1166,7 +1313,9 @@ document
 /* HISTORY */
 
 document
-    .getElementById("historyButton")
+    .getElementById(
+        "historyButton"
+    )
     .addEventListener(
         "click",
         showHistory
@@ -1174,7 +1323,9 @@ document
 
 
 document
-    .getElementById("menuHistory")
+    .getElementById(
+        "menuHistory"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1190,7 +1341,9 @@ document
 /* UNDO */
 
 document
-    .getElementById("menuUndo")
+    .getElementById(
+        "menuUndo"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1206,7 +1359,9 @@ document
 /* RESET */
 
 document
-    .getElementById("menuReset")
+    .getElementById(
+        "menuReset"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1222,7 +1377,9 @@ document
 /* CLOSE HISTORY */
 
 document
-    .getElementById("closeHistory")
+    .getElementById(
+        "closeHistory"
+    )
     .addEventListener(
         "click",
         () => {
@@ -1240,7 +1397,9 @@ document
 
 
 document
-    .getElementById("historyModal")
+    .getElementById(
+        "historyModal"
+    )
     .addEventListener(
         "click",
         e => {
@@ -1264,13 +1423,16 @@ document
     );
 
 
-/* LOAD BROWSER VOICES */
+/* LOAD VOICES */
 
-if(window.speechSynthesis){
+if(
+    window.speechSynthesis
+){
 
     window.speechSynthesis.onvoiceschanged =
         () =>
-        window.speechSynthesis.getVoices();
+            window.speechSynthesis
+                .getVoices();
 
 }
 
