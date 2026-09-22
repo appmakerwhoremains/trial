@@ -638,6 +638,7 @@ const numbers =
 
 const englishNumbers = {
 
+0:"Zero",
 1:"One",
 2:"Two",
 3:"Three",
@@ -902,10 +903,6 @@ function announce(num){
         50 -> Five
               Zero
               Fifty
-
-        60 -> Six
-              Zero
-              Sixty
 
         etc.
     */
