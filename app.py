@@ -82,7 +82,9 @@ button{
     color:#333;
 }
 
-.current-area{text-align:center}
+.current-area{
+    text-align:center
+}
 
 .previous{
     height:24px;
@@ -736,10 +738,6 @@ let currentNumber = null;
 
 let voiceType = "female";
 
-/*
-    Default speed = 1.30×
-    User can change it from hamburger menu.
-*/
 let speechRate = 1.30;
 
 let speechGeneration = 0;
@@ -864,13 +862,10 @@ function announce(num){
 
     speechGeneration++;
 
-
     const generation =
         speechGeneration;
 
-
     window.speechSynthesis.cancel();
-
 
     let sequence = [];
 
@@ -882,8 +877,6 @@ function announce(num){
         2 -> Two
         ...
         9 -> Nine
-
-        They are spoken ONLY ONCE.
     */
 
     if(num < 10){
@@ -906,8 +899,15 @@ function announce(num){
               Zero
               Forty
 
-        This specifically fixes numbers
-        ending in zero.
+        50 -> Five
+              Zero
+              Fifty
+
+        60 -> Six
+              Zero
+              Sixty
+
+        etc.
     */
 
     else{
@@ -968,11 +968,7 @@ function announce(num){
 
             /*
                 Faster spacing between
-                individual digit announcements.
-
-                The actual speaking speed is
-                controlled independently by
-                the hamburger slider.
+                individual announcements.
             */
 
             delay +=
