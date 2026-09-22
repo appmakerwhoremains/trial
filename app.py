@@ -41,8 +41,6 @@ button{
     background:#fff;
 }
 
-/* TOP BAR */
-
 .topbar{
     height:43px;
     display:flex;
@@ -64,9 +62,7 @@ button{
     justify-content:center;
 }
 
-.menu-btn{
-    font-size:27px
-}
+.menu-btn{font-size:27px}
 
 .history-top{
     border:1px solid #d79d58;
@@ -86,11 +82,7 @@ button{
     color:#333;
 }
 
-/* CURRENT NUMBER */
-
-.current-area{
-    text-align:center
-}
+.current-area{text-align:center}
 
 .previous{
     height:24px;
@@ -125,8 +117,6 @@ button{
     font-weight:600;
 }
 
-/* SPEAKER */
-
 .speaker-row{
     height:45px;
     display:flex;
@@ -144,8 +134,6 @@ button{
     font-size:23px;
     cursor:pointer;
 }
-
-/* NEXT */
 
 .next-row{
     height:75px;
@@ -171,8 +159,6 @@ button{
 .next:active{
     transform:scale(.98);
 }
-
-/* GRID */
 
 .number-grid{
     display:grid;
@@ -211,8 +197,6 @@ button{
     color:#fff;
 }
 
-/* STATUS */
-
 .status{
     text-align:center;
     height:21px;
@@ -239,7 +223,7 @@ button{
     position:absolute;
     top:0;
     left:0;
-    width:min(310px,86vw);
+    width:min(330px,88vw);
     height:100%;
     background:#fff;
     box-shadow:5px 0 18px rgba(0,0,0,.22);
@@ -275,6 +259,12 @@ button{
     border-bottom:1px solid #eee;
 }
 
+.section-title{
+    font-size:15px;
+    font-weight:800;
+    margin-bottom:9px;
+}
+
 .menu-action{
     width:100%;
     border:1px solid #ddd;
@@ -292,7 +282,50 @@ button{
     background:#fff2f2;
 }
 
-/* HISTORY MODAL */
+/* SPEED CONTROL */
+
+.speed-box{
+    background:#f7f7f7;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:13px 12px;
+    margin-top:8px;
+}
+
+.speed-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+.speed-title{
+    font-size:15px;
+    font-weight:800;
+}
+
+.speed-value{
+    color:#d90000;
+    font-weight:800;
+    font-size:14px;
+}
+
+.speed-slider{
+    width:100%;
+    height:5px;
+    accent-color:#d90000;
+    cursor:pointer;
+}
+
+.speed-labels{
+    display:flex;
+    justify-content:space-between;
+    color:#777;
+    font-size:11px;
+    margin-top:5px;
+}
+
+/* HISTORY */
 
 .modal-wrap{
     position:fixed;
@@ -351,8 +384,6 @@ button{
     text-align:center;
     padding:20px;
 }
-
-/* VERY SMALL PHONES */
 
 @media(max-width:380px){
 
@@ -511,6 +542,50 @@ button{
         </div>
 
 
+        <!-- SPEECH SPEED -->
+
+        <div class="menu-section">
+
+            <div class="section-title">
+                🔊 Speaking Speed
+            </div>
+
+            <div class="speed-box">
+
+                <div class="speed-header">
+
+                    <span class="speed-title">
+                        Voice Speed
+                    </span>
+
+                    <span class="speed-value" id="speedValue">
+                        1.30×
+                    </span>
+
+                </div>
+
+                <input
+                    type="range"
+                    id="speedSlider"
+                    class="speed-slider"
+                    min="80"
+                    max="160"
+                    value="130"
+                    step="5"
+                >
+
+                <div class="speed-labels">
+                    <span>Slow</span>
+                    <span>Normal</span>
+                    <span>Fast</span>
+                    <span>Very Fast</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
         <div class="menu-section">
 
             <div style="font-size:12px;color:#888;text-align:center">
@@ -525,7 +600,7 @@ button{
 </div>
 
 
-<!-- HISTORY MODAL -->
+<!-- HISTORY -->
 
 <div class="modal-wrap" id="historyModal">
 
@@ -661,7 +736,11 @@ let currentNumber = null;
 
 let voiceType = "female";
 
-let speedLevel = 7;
+/*
+    Default speed = 1.30×
+    User can change it from hamburger menu.
+*/
+let speechRate = 1.30;
 
 let speechGeneration = 0;
 
@@ -672,7 +751,7 @@ const grid =
     );
 
 
-/* CREATE GRID */
+/* CREATE 1-90 GRID */
 
 numbers.forEach(num => {
 
@@ -700,23 +779,6 @@ numbers.forEach(num => {
 });
 
 
-/* SPEECH SPEED */
-
-function getRate(){
-
-    return {
-
-        3:0.85,
-        4:0.95,
-        5:1.05,
-        6:1.15,
-        7:1.25
-
-    }[speedLevel];
-
-}
-
-
 /* SPEAK */
 
 function speak(text, generation){
@@ -737,7 +799,7 @@ function speak(text, generation){
 
 
     utterance.rate =
-        getRate();
+        speechRate;
 
 
     utterance.pitch =
@@ -810,39 +872,44 @@ function announce(num){
     window.speechSynthesis.cancel();
 
 
-    /*
-       SINGLE DIGIT:
-       1  -> One
-
-       DOUBLE DIGIT:
-       43 -> Four
-             Three
-             Forty-three
-    */
-
-
     let sequence = [];
 
 
+    /*
+        SINGLE DIGITS
+
+        1 -> One
+        2 -> Two
+        ...
+        9 -> Nine
+
+        They are spoken ONLY ONCE.
+    */
+
     if(num < 10){
-
-        /*
-           IMPORTANT FIX:
-           Previously the digit word and
-           full number word were both
-           added, causing:
-
-           One
-           One
-
-           Now single digit speaks once.
-        */
 
         sequence = [
             englishNumbers[num]
         ];
 
     }
+
+
+    /*
+        DOUBLE DIGITS
+
+        43 -> Four
+              Three
+              Forty-three
+
+        40 -> Four
+              Zero
+              Forty
+
+        This specifically fixes numbers
+        ending in zero.
+    */
+
     else{
 
         const digits =
@@ -900,15 +967,18 @@ function announce(num){
 
 
             /*
-               Faster transition between
-               digit announcements while
-               keeping the words clear.
+                Faster spacing between
+                individual digit announcements.
+
+                The actual speaking speed is
+                controlled independently by
+                the hamburger slider.
             */
 
             delay +=
                 num < 10
                 ? 0
-                : 650;
+                : 600;
 
         }
     );
@@ -1242,7 +1312,7 @@ function closeMenu(){
 }
 
 
-/* NEXT */
+/* NEXT BUTTON */
 
 document
     .getElementById(
@@ -1254,7 +1324,7 @@ document
     );
 
 
-/* SPEAKER */
+/* SPEAKER BUTTON */
 
 document
     .getElementById(
@@ -1278,7 +1348,7 @@ document
     );
 
 
-/* MENU */
+/* MENU BUTTON */
 
 document
     .getElementById(
@@ -1310,7 +1380,7 @@ document
     );
 
 
-/* HISTORY */
+/* HISTORY BUTTON */
 
 document
     .getElementById(
@@ -1423,7 +1493,38 @@ document
     );
 
 
-/* LOAD VOICES */
+/* SPEED CONTROLLER */
+
+const speedSlider =
+    document.getElementById(
+        "speedSlider"
+    );
+
+const speedValue =
+    document.getElementById(
+        "speedValue"
+    );
+
+
+speedSlider.addEventListener(
+    "input",
+    () => {
+
+        speechRate =
+            Number(
+                speedSlider.value
+            ) / 100;
+
+
+        speedValue.textContent =
+            speechRate.toFixed(2)
+            + "×";
+
+    }
+);
+
+
+/* LOAD BROWSER VOICES */
 
 if(
     window.speechSynthesis
