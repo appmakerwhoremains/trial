@@ -12,10 +12,15 @@ html = r"""
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box
+}
 
 html,body{
     margin:0;
@@ -62,7 +67,9 @@ button{
     justify-content:center;
 }
 
-.menu-btn{font-size:27px}
+.menu-btn{
+    font-size:27px
+}
 
 .history-top{
     border:1px solid #d79d58;
@@ -207,6 +214,7 @@ button{
     color:#777;
 }
 
+
 /* DRAWER */
 
 .overlay{
@@ -284,6 +292,7 @@ button{
     background:#fff2f2;
 }
 
+
 /* SPEED CONTROL */
 
 .speed-box{
@@ -326,6 +335,7 @@ button{
     font-size:11px;
     margin-top:5px;
 }
+
 
 /* HISTORY */
 
@@ -387,6 +397,7 @@ button{
     padding:20px;
 }
 
+
 @media(max-width:380px){
 
     .app{
@@ -438,8 +449,10 @@ button{
         gap:2px
     }
 }
+
 </style>
 </head>
+
 
 <body>
 
@@ -465,16 +478,33 @@ button{
     <div class="current-area">
 
         <div class="previous">
+
             <span>Prev. number:</span>
-            <span class="prev-value" id="prevNumber">--</span>
+
+            <span
+                class="prev-value"
+                id="prevNumber">
+                --
+            </span>
+
         </div>
 
-        <div class="current-number" id="currentNumber">
+
+        <div
+            class="current-number"
+            id="currentNumber">
+
             --
+
         </div>
 
-        <div class="current-name" id="currentName">
+
+        <div
+            class="current-name"
+            id="currentName">
+
             Press NEXT to start
+
         </div>
 
     </div>
@@ -482,8 +512,12 @@ button{
 
     <div class="speaker-row">
 
-        <button class="speaker" id="speakerButton">
+        <button
+            class="speaker"
+            id="speakerButton">
+
             🔊
+
         </button>
 
     </div>
@@ -491,28 +525,43 @@ button{
 
     <div class="next-row">
 
-        <button class="next" id="nextButton">
+        <button
+            class="next"
+            id="nextButton">
+
             NEXT
+
         </button>
 
     </div>
 
 
-    <div class="status" id="status">
+    <div
+        class="status"
+        id="status">
+
         90 numbers remaining
+
     </div>
 
 
-    <div class="number-grid" id="numberGrid"></div>
+    <div
+        class="number-grid"
+        id="numberGrid">
+    </div>
 
 </div>
 
 
 <!-- HAMBURGER DRAWER -->
 
-<div class="overlay" id="menuOverlay">
+<div
+    class="overlay"
+    id="menuOverlay">
 
-    <div class="drawer" onclick="event.stopPropagation()">
+    <div
+        class="drawer"
+        onclick="event.stopPropagation()">
 
         <div class="drawer-head">
 
@@ -520,8 +569,12 @@ button{
                 ☰ Game Settings
             </div>
 
-            <button class="close" id="closeMenu">
+            <button
+                class="close"
+                id="closeMenu">
+
                 ×
+
             </button>
 
         </div>
@@ -529,16 +582,30 @@ button{
 
         <div class="menu-section">
 
-            <button class="menu-action" id="menuHistory">
+            <button
+                class="menu-action"
+                id="menuHistory">
+
                 📜 Number History
+
             </button>
 
-            <button class="menu-action" id="menuUndo">
+
+            <button
+                class="menu-action"
+                id="menuUndo">
+
                 ↩️ Undo Last Number
+
             </button>
 
-            <button class="menu-action danger" id="menuReset">
+
+            <button
+                class="menu-action danger"
+                id="menuReset">
+
                 🔄 New Game
+
             </button>
 
         </div>
@@ -549,38 +616,53 @@ button{
         <div class="menu-section">
 
             <div class="section-title">
+
                 🔊 Speaking Speed
+
             </div>
+
 
             <div class="speed-box">
 
                 <div class="speed-header">
 
                     <span class="speed-title">
-                        Voice Speed
+                        Female Voice Speed
                     </span>
 
-                    <span class="speed-value" id="speedValue">
-                        1.30×
+
+                    <span
+                        class="speed-value"
+                        id="speedValue">
+
+                        1.60×
+
                     </span>
 
                 </div>
+
 
                 <input
                     type="range"
                     id="speedSlider"
                     class="speed-slider"
                     min="80"
-                    max="160"
-                    value="130"
+                    max="200"
+                    value="160"
                     step="5"
                 >
 
+
                 <div class="speed-labels">
+
                     <span>Slow</span>
+
                     <span>Normal</span>
+
                     <span>Fast</span>
+
                     <span>Very Fast</span>
+
                 </div>
 
             </div>
@@ -590,9 +672,15 @@ button{
 
         <div class="menu-section">
 
-            <div style="font-size:12px;color:#888;text-align:center">
+            <div
+                style="
+                font-size:12px;
+                color:#888;
+                text-align:center">
+
                 Kitty Housie Caller<br>
                 1–90 Tambola
+
             </div>
 
         </div>
@@ -604,23 +692,36 @@ button{
 
 <!-- HISTORY -->
 
-<div class="modal-wrap" id="historyModal">
+<div
+    class="modal-wrap"
+    id="historyModal">
 
     <div class="modal">
 
         <div class="modal-head">
 
             <div class="modal-title">
+
                 📜 Number History
+
             </div>
 
-            <button class="close" id="closeHistory">
+
+            <button
+                class="close"
+                id="closeHistory">
+
                 ×
+
             </button>
 
         </div>
 
-        <div id="historyList" class="history-list"></div>
+
+        <div
+            id="historyList"
+            class="history-list">
+        </div>
 
     </div>
 
@@ -629,12 +730,21 @@ button{
 
 <script>
 
+
+/* =========================
+   NUMBERS
+========================= */
+
 const numbers =
     Array.from(
         {length:90},
         (_,i) => i + 1
     );
 
+
+/* =========================
+   NUMBER NAMES
+========================= */
 
 const englishNumbers = {
 
@@ -733,13 +843,23 @@ const englishNumbers = {
 };
 
 
+/* =========================
+   GAME STATE
+========================= */
+
 let calledNumbers = [];
 
 let currentNumber = null;
 
-let voiceType = "female";
 
-let speechRate = 1.30;
+/*
+   FEMALE VOICE FIXED
+   SPEED DEFAULT = 1.60x
+*/
+
+const voiceType = "female";
+
+let speechRate = 1.60;
 
 let speechGeneration = 0;
 
@@ -750,7 +870,9 @@ const grid =
     );
 
 
-/* CREATE 1-90 GRID */
+/* =========================
+   CREATE 1-90 GRID
+========================= */
 
 numbers.forEach(num => {
 
@@ -759,26 +881,33 @@ numbers.forEach(num => {
             "button"
         );
 
+
     button.className =
         "number";
+
 
     button.textContent =
         num;
 
+
     button.dataset.number =
         num;
+
 
     button.addEventListener(
         "click",
         () => callNumber(num)
     );
 
+
     grid.appendChild(button);
 
 });
 
 
-/* SPEAK */
+/* =========================
+   SPEAK
+========================= */
 
 function speak(text, generation){
 
@@ -793,26 +922,42 @@ function speak(text, generation){
         );
 
 
+    /*
+       Indian English
+    */
+
     utterance.lang =
         "en-IN";
 
+
+    /*
+       User-controlled speed
+    */
 
     utterance.rate =
         speechRate;
 
 
+    /*
+       FEMALE VOICE CHARACTER
+    */
+
     utterance.pitch =
-        voiceType === "female"
-        ? 1.08
-        : 0.82;
+        1.08;
 
 
-    utterance.volume = 1;
+    utterance.volume =
+        1;
 
 
     const voices =
         window.speechSynthesis.getVoices();
 
+
+    /*
+       Try Indian English female
+       voice first.
+    */
 
     let selected =
         voices.find(
@@ -820,21 +965,59 @@ function speak(text, generation){
                 v.lang &&
                 v.lang
                 .toLowerCase()
-                .startsWith("en-in")
-        )
-        ||
-        voices.find(
-            v =>
-                v.lang &&
-                v.lang
-                .toLowerCase()
-                .startsWith("en")
+                .startsWith("en-in") &&
+                /female|woman|zira|heera|veena|samantha/i
+                .test(v.name)
         );
 
 
+    /*
+       Fallback to English female
+       voice names.
+    */
+
+    if(!selected){
+
+        selected =
+            voices.find(
+                v =>
+                    v.lang &&
+                    v.lang
+                    .toLowerCase()
+                    .startsWith("en") &&
+                    /female|woman|zira|heera|veena|samantha/i
+                    .test(v.name)
+            );
+
+    }
+
+
+    /*
+       Final fallback:
+       English voice.
+
+       Pitch remains female-like.
+    */
+
+    if(!selected){
+
+        selected =
+            voices.find(
+                v =>
+                    v.lang &&
+                    v.lang
+                    .toLowerCase()
+                    .startsWith("en")
+            );
+
+    }
+
+
     if(selected){
+
         utterance.voice =
             selected;
+
     }
 
 
@@ -844,7 +1027,9 @@ function speak(text, generation){
             generation !==
             speechGeneration
         ){
+
             return;
+
         }
 
     };
@@ -857,27 +1042,31 @@ function speak(text, generation){
 }
 
 
-/* ANNOUNCE NUMBER */
+/* =========================
+   ANNOUNCE NUMBER
+========================= */
 
 function announce(num){
 
     speechGeneration++;
 
+
     const generation =
         speechGeneration;
 
+
     window.speechSynthesis.cancel();
+
 
     let sequence = [];
 
 
     /*
-        SINGLE DIGITS
+       SINGLE DIGIT
 
-        1 -> One
-        2 -> Two
-        ...
-        9 -> Nine
+       1 → One
+       2 → Two
+       etc.
     */
 
     if(num < 10){
@@ -890,21 +1079,17 @@ function announce(num){
 
 
     /*
-        DOUBLE DIGITS
+       DOUBLE DIGIT
 
-        43 -> Four
-              Three
-              Forty-three
+       43 →
+       Four
+       Three
+       Forty-three
 
-        40 -> Four
-              Zero
-              Forty
-
-        50 -> Five
-              Zero
-              Fifty
-
-        etc.
+       40 →
+       Four
+       Zero
+       Forty
     */
 
     else{
@@ -941,7 +1126,9 @@ function announce(num){
                         generation !==
                         speechGeneration
                     ){
+
                         return;
+
                     }
 
 
@@ -949,7 +1136,9 @@ function announce(num){
                         currentNumber !==
                         num
                     ){
+
                         return;
+
                     }
 
 
@@ -964,8 +1153,8 @@ function announce(num){
 
 
             /*
-                Faster spacing between
-                individual announcements.
+               600ms between
+               digit announcements
             */
 
             delay +=
@@ -979,7 +1168,9 @@ function announce(num){
 }
 
 
-/* CALL NUMBER */
+/* =========================
+   CALL NUMBER
+========================= */
 
 function callNumber(num){
 
@@ -990,9 +1181,12 @@ function callNumber(num){
         currentNumber =
             num;
 
+
         updateDisplay();
 
+
         announce(num);
+
 
         return;
 
@@ -1001,17 +1195,22 @@ function callNumber(num){
 
     calledNumbers.push(num);
 
+
     currentNumber =
         num;
 
+
     updateDisplay();
+
 
     announce(num);
 
 }
 
 
-/* NEXT RANDOM NUMBER */
+/* =========================
+   NEXT RANDOM NUMBER
+========================= */
 
 function nextNumber(){
 
@@ -1027,6 +1226,7 @@ function nextNumber(){
         alert(
             "All 90 numbers have been called!"
         );
+
 
         return;
 
@@ -1051,7 +1251,9 @@ function nextNumber(){
 }
 
 
-/* UPDATE DISPLAY */
+/* =========================
+   UPDATE DISPLAY
+========================= */
 
 function updateDisplay(){
 
@@ -1142,14 +1344,18 @@ function updateDisplay(){
 }
 
 
-/* UNDO */
+/* =========================
+   UNDO
+========================= */
 
 function undo(){
 
     if(
         !calledNumbers.length
     ){
+
         return;
+
     }
 
 
@@ -1166,6 +1372,7 @@ function undo(){
 
     speechGeneration++;
 
+
     window.speechSynthesis.cancel();
 
 
@@ -1174,7 +1381,9 @@ function undo(){
 }
 
 
-/* RESET */
+/* =========================
+   RESET
+========================= */
 
 function resetGame(){
 
@@ -1183,24 +1392,32 @@ function resetGame(){
             "Start a new Housie game?"
         )
     ){
+
         return;
+
     }
 
 
     calledNumbers = [];
 
+
     currentNumber = null;
+
 
     speechGeneration++;
 
+
     window.speechSynthesis.cancel();
+
 
     updateDisplay();
 
 }
 
 
-/* HISTORY */
+/* =========================
+   HISTORY
+========================= */
 
 function showHistory(){
 
@@ -1277,7 +1494,9 @@ function showHistory(){
 }
 
 
-/* MENU */
+/* =========================
+   MENU
+========================= */
 
 function openMenu(){
 
@@ -1305,7 +1524,9 @@ function closeMenu(){
 }
 
 
-/* NEXT BUTTON */
+/* =========================
+   NEXT BUTTON
+========================= */
 
 document
     .getElementById(
@@ -1317,7 +1538,9 @@ document
     );
 
 
-/* SPEAKER BUTTON */
+/* =========================
+   SPEAKER BUTTON
+========================= */
 
 document
     .getElementById(
@@ -1341,7 +1564,9 @@ document
     );
 
 
-/* MENU BUTTON */
+/* =========================
+   MENU BUTTON
+========================= */
 
 document
     .getElementById(
@@ -1373,7 +1598,9 @@ document
     );
 
 
-/* HISTORY BUTTON */
+/* =========================
+   HISTORY BUTTON
+========================= */
 
 document
     .getElementById(
@@ -1401,7 +1628,9 @@ document
     );
 
 
-/* UNDO */
+/* =========================
+   UNDO
+========================= */
 
 document
     .getElementById(
@@ -1419,7 +1648,9 @@ document
     );
 
 
-/* RESET */
+/* =========================
+   RESET
+========================= */
 
 document
     .getElementById(
@@ -1437,7 +1668,9 @@ document
     );
 
 
-/* CLOSE HISTORY */
+/* =========================
+   CLOSE HISTORY
+========================= */
 
 document
     .getElementById(
@@ -1486,12 +1719,15 @@ document
     );
 
 
-/* SPEED CONTROLLER */
+/* =========================
+   SPEED CONTROLLER
+========================= */
 
 const speedSlider =
     document.getElementById(
         "speedSlider"
     );
+
 
 const speedValue =
     document.getElementById(
@@ -1517,7 +1753,9 @@ speedSlider.addEventListener(
 );
 
 
-/* LOAD BROWSER VOICES */
+/* =========================
+   LOAD BROWSER VOICES
+========================= */
 
 if(
     window.speechSynthesis
@@ -1531,7 +1769,9 @@ if(
 }
 
 
-/* INITIAL DISPLAY */
+/* =========================
+   INITIAL DISPLAY
+========================= */
 
 updateDisplay();
 
@@ -1540,6 +1780,7 @@ updateDisplay();
 </body>
 </html>
 """
+
 
 components.html(
     html,
