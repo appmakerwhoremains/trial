@@ -14,7 +14,7 @@ html = r"""
 <head>
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
 
@@ -337,6 +337,21 @@ button{
 }
 
 
+/* VOICE INFO */
+
+.voice-lock{
+    margin-top:9px;
+    padding:9px 10px;
+    border-radius:9px;
+    background:#eef8ee;
+    border:1px solid #b9ddb9;
+    color:#397039;
+    font-size:12px;
+    font-weight:700;
+    text-align:center;
+}
+
+
 /* HISTORY */
 
 .modal-wrap{
@@ -448,6 +463,7 @@ button{
     .number-grid{
         gap:2px
     }
+
 }
 
 </style>
@@ -460,7 +476,9 @@ button{
 
     <div class="topbar">
 
-        <button class="icon-btn menu-btn" id="menuButton">
+        <button
+            class="icon-btn menu-btn"
+            id="menuButton">
             ☰
         </button>
 
@@ -468,7 +486,9 @@ button{
             🎉 Kitty Housie
         </div>
 
-        <button class="history-top" id="historyButton">
+        <button
+            class="history-top"
+            id="historyButton">
             Number<br>History
         </button>
 
@@ -479,7 +499,9 @@ button{
 
         <div class="previous">
 
-            <span>Prev. number:</span>
+            <span>
+                Prev. number:
+            </span>
 
             <span
                 class="prev-value"
@@ -493,18 +515,14 @@ button{
         <div
             class="current-number"
             id="currentNumber">
-
             --
-
         </div>
 
 
         <div
             class="current-name"
             id="currentName">
-
             Press NEXT to start
-
         </div>
 
     </div>
@@ -515,9 +533,7 @@ button{
         <button
             class="speaker"
             id="speakerButton">
-
             🔊
-
         </button>
 
     </div>
@@ -528,9 +544,7 @@ button{
         <button
             class="next"
             id="nextButton">
-
             NEXT
-
         </button>
 
     </div>
@@ -539,9 +553,7 @@ button{
     <div
         class="status"
         id="status">
-
         90 numbers remaining
-
     </div>
 
 
@@ -572,9 +584,7 @@ button{
             <button
                 class="close"
                 id="closeMenu">
-
                 ×
-
             </button>
 
         </div>
@@ -585,40 +595,40 @@ button{
             <button
                 class="menu-action"
                 id="menuHistory">
-
                 📜 Number History
-
             </button>
 
 
             <button
                 class="menu-action"
                 id="menuUndo">
-
                 ↩️ Undo Last Number
-
             </button>
 
 
             <button
                 class="menu-action danger"
                 id="menuReset">
-
                 🔄 New Game
-
             </button>
 
         </div>
 
 
-        <!-- SPEECH SPEED -->
+        <!-- SPEECH SETTINGS -->
 
         <div class="menu-section">
 
             <div class="section-title">
+                🔊 Voice Settings
+            </div>
 
-                🔊 Speaking Speed
 
+            <div class="voice-lock">
+                👩 Female Voice<br>
+                <span style="font-weight:500">
+                    Voice is fixed for this app
+                </span>
             </div>
 
 
@@ -627,16 +637,13 @@ button{
                 <div class="speed-header">
 
                     <span class="speed-title">
-                        Female Voice Speed
+                        Voice Speed
                     </span>
-
 
                     <span
                         class="speed-value"
                         id="speedValue">
-
-                        1.60×
-
+                        1.25×
                     </span>
 
                 </div>
@@ -647,21 +654,29 @@ button{
                     id="speedSlider"
                     class="speed-slider"
                     min="80"
-                    max="200"
-                    value="160"
+                    max="160"
+                    value="125"
                     step="5"
                 >
 
 
                 <div class="speed-labels">
 
-                    <span>Slow</span>
+                    <span>
+                        Slow
+                    </span>
 
-                    <span>Normal</span>
+                    <span>
+                        Normal
+                    </span>
 
-                    <span>Fast</span>
+                    <span>
+                        Fast
+                    </span>
 
-                    <span>Very Fast</span>
+                    <span>
+                        Very Fast
+                    </span>
 
                 </div>
 
@@ -701,18 +716,13 @@ button{
         <div class="modal-head">
 
             <div class="modal-title">
-
                 📜 Number History
-
             </div>
-
 
             <button
                 class="close"
                 id="closeHistory">
-
                 ×
-
             </button>
 
         </div>
@@ -731,9 +741,9 @@ button{
 <script>
 
 
-/* =========================
+/* =========================================================
    NUMBERS
-========================= */
+========================================================= */
 
 const numbers =
     Array.from(
@@ -742,9 +752,9 @@ const numbers =
     );
 
 
-/* =========================
-   NUMBER NAMES
-========================= */
+/* =========================================================
+   NUMBER WORDS
+========================================================= */
 
 const englishNumbers = {
 
@@ -843,9 +853,9 @@ const englishNumbers = {
 };
 
 
-/* =========================
+/* =========================================================
    GAME STATE
-========================= */
+========================================================= */
 
 let calledNumbers = [];
 
@@ -853,26 +863,36 @@ let currentNumber = null;
 
 
 /*
-   FEMALE VOICE FIXED
-   SPEED DEFAULT = 1.60x
-*/
+    FEMALE VOICE IS LOCKED.
 
+    There is intentionally no voice selector.
+*/
 const voiceType = "female";
 
-let speechRate = 1.60;
 
+/*
+    SPEED STARTS AT 1.25×
+
+    The slider can still be changed.
+*/
+let speechRate = 1.25;
+
+
+/*
+    Used to cancel old announcements.
+*/
 let speechGeneration = 0;
 
+
+/* =========================================================
+   GRID
+========================================================= */
 
 const grid =
     document.getElementById(
         "numberGrid"
     );
 
-
-/* =========================
-   CREATE 1-90 GRID
-========================= */
 
 numbers.forEach(num => {
 
@@ -881,33 +901,28 @@ numbers.forEach(num => {
             "button"
         );
 
-
     button.className =
         "number";
-
 
     button.textContent =
         num;
 
-
     button.dataset.number =
         num;
-
 
     button.addEventListener(
         "click",
         () => callNumber(num)
     );
 
-
     grid.appendChild(button);
 
 });
 
 
-/* =========================
-   SPEAK
-========================= */
+/* =========================================================
+   SPEECH
+========================================================= */
 
 function speak(text, generation){
 
@@ -923,25 +938,28 @@ function speak(text, generation){
 
 
     /*
-       Indian English
+        Indian English
     */
-
     utterance.lang =
         "en-IN";
 
 
     /*
-       User-controlled speed
-    */
+        CURRENT SPEED
 
+        Default = 1.25×
+
+        Can be changed with slider.
+    */
     utterance.rate =
         speechRate;
 
 
     /*
-       FEMALE VOICE CHARACTER
-    */
+        FEMALE VOICE LOCK
 
+        Pitch is fixed to female-style pitch.
+    */
     utterance.pitch =
         1.08;
 
@@ -955,8 +973,12 @@ function speak(text, generation){
 
 
     /*
-       Try Indian English female
-       voice first.
+        Prefer Indian English female voice.
+
+        If the browser does not expose gender metadata,
+        the first en-IN voice is used.
+
+        Then fallback to English.
     */
 
     let selected =
@@ -964,16 +986,35 @@ function speak(text, generation){
             v =>
                 v.lang &&
                 v.lang
-                .toLowerCase()
-                .startsWith("en-in") &&
-                /female|woman|zira|heera|veena|samantha/i
-                .test(v.name)
+                    .toLowerCase()
+                    .startsWith("en-in") &&
+                (
+                    v.name
+                        .toLowerCase()
+                        .includes("female")
+                    ||
+                    v.name
+                        .toLowerCase()
+                        .includes("woman")
+                    ||
+                    v.name
+                        .toLowerCase()
+                        .includes("zira")
+                    ||
+                    v.name
+                        .toLowerCase()
+                        .includes("heera")
+                    ||
+                    v.name
+                        .toLowerCase()
+                        .includes("samantha")
+                )
         );
 
 
     /*
-       Fallback to English female
-       voice names.
+        If no obvious female voice is exposed,
+        use the first Indian English voice.
     */
 
     if(!selected){
@@ -983,20 +1024,15 @@ function speak(text, generation){
                 v =>
                     v.lang &&
                     v.lang
-                    .toLowerCase()
-                    .startsWith("en") &&
-                    /female|woman|zira|heera|veena|samantha/i
-                    .test(v.name)
+                        .toLowerCase()
+                        .startsWith("en-in")
             );
 
     }
 
 
     /*
-       Final fallback:
-       English voice.
-
-       Pitch remains female-like.
+        Final fallback to English voice.
     */
 
     if(!selected){
@@ -1006,8 +1042,8 @@ function speak(text, generation){
                 v =>
                     v.lang &&
                     v.lang
-                    .toLowerCase()
-                    .startsWith("en")
+                        .toLowerCase()
+                        .startsWith("en")
             );
 
     }
@@ -1027,9 +1063,7 @@ function speak(text, generation){
             generation !==
             speechGeneration
         ){
-
             return;
-
         }
 
     };
@@ -1042,9 +1076,9 @@ function speak(text, generation){
 }
 
 
-/* =========================
+/* =========================================================
    ANNOUNCE NUMBER
-========================= */
+========================================================= */
 
 function announce(num){
 
@@ -1062,11 +1096,12 @@ function announce(num){
 
 
     /*
-       SINGLE DIGIT
+        SINGLE DIGITS
 
-       1 → One
-       2 → Two
-       etc.
+        1 → One
+        2 → Two
+        ...
+        9 → Nine
     */
 
     if(num < 10){
@@ -1079,30 +1114,32 @@ function announce(num){
 
 
     /*
-       DOUBLE DIGIT
+        DOUBLE DIGITS
 
-       43 →
-       Four
-       Three
-       Forty-three
+        43 → Four
+             Three
+             Forty-three
 
-       40 →
-       Four
-       Zero
-       Forty
+        40 → Four
+             Zero
+             Forty
+
+        50 → Five
+             Zero
+             Fifty
     */
 
     else{
 
         const digits =
             String(num)
-            .split("")
-            .map(
-                digit =>
-                    englishNumbers[
-                        Number(digit)
-                    ]
-            );
+                .split("")
+                .map(
+                    digit =>
+                        englishNumbers[
+                            Number(digit)
+                        ]
+                );
 
 
         sequence = [
@@ -1126,9 +1163,7 @@ function announce(num){
                         generation !==
                         speechGeneration
                     ){
-
                         return;
-
                     }
 
 
@@ -1136,9 +1171,7 @@ function announce(num){
                         currentNumber !==
                         num
                     ){
-
                         return;
-
                     }
 
 
@@ -1153,8 +1186,8 @@ function announce(num){
 
 
             /*
-               600ms between
-               digit announcements
+                600 ms between
+                digit announcements.
             */
 
             delay +=
@@ -1168,9 +1201,9 @@ function announce(num){
 }
 
 
-/* =========================
+/* =========================================================
    CALL NUMBER
-========================= */
+========================================================= */
 
 function callNumber(num){
 
@@ -1181,12 +1214,9 @@ function callNumber(num){
         currentNumber =
             num;
 
-
         updateDisplay();
 
-
         announce(num);
-
 
         return;
 
@@ -1208,9 +1238,9 @@ function callNumber(num){
 }
 
 
-/* =========================
+/* =========================================================
    NEXT RANDOM NUMBER
-========================= */
+========================================================= */
 
 function nextNumber(){
 
@@ -1226,7 +1256,6 @@ function nextNumber(){
         alert(
             "All 90 numbers have been called!"
         );
-
 
         return;
 
@@ -1251,9 +1280,9 @@ function nextNumber(){
 }
 
 
-/* =========================
+/* =========================================================
    UPDATE DISPLAY
-========================= */
+========================================================= */
 
 function updateDisplay(){
 
@@ -1344,18 +1373,16 @@ function updateDisplay(){
 }
 
 
-/* =========================
+/* =========================================================
    UNDO
-========================= */
+========================================================= */
 
 function undo(){
 
     if(
         !calledNumbers.length
     ){
-
         return;
-
     }
 
 
@@ -1381,9 +1408,9 @@ function undo(){
 }
 
 
-/* =========================
+/* =========================================================
    RESET
-========================= */
+========================================================= */
 
 function resetGame(){
 
@@ -1392,14 +1419,11 @@ function resetGame(){
             "Start a new Housie game?"
         )
     ){
-
         return;
-
     }
 
 
     calledNumbers = [];
-
 
     currentNumber = null;
 
@@ -1415,9 +1439,9 @@ function resetGame(){
 }
 
 
-/* =========================
+/* =========================================================
    HISTORY
-========================= */
+========================================================= */
 
 function showHistory(){
 
@@ -1494,9 +1518,9 @@ function showHistory(){
 }
 
 
-/* =========================
+/* =========================================================
    MENU
-========================= */
+========================================================= */
 
 function openMenu(){
 
@@ -1524,9 +1548,9 @@ function closeMenu(){
 }
 
 
-/* =========================
+/* =========================================================
    NEXT BUTTON
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1538,9 +1562,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    SPEAKER BUTTON
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1564,9 +1588,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    MENU BUTTON
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1598,9 +1622,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    HISTORY BUTTON
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1628,9 +1652,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    UNDO
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1648,9 +1672,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    RESET
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1668,9 +1692,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    CLOSE HISTORY
-========================= */
+========================================================= */
 
 document
     .getElementById(
@@ -1719,9 +1743,9 @@ document
     );
 
 
-/* =========================
+/* =========================================================
    SPEED CONTROLLER
-========================= */
+========================================================= */
 
 const speedSlider =
     document.getElementById(
@@ -1747,31 +1771,35 @@ speedSlider.addEventListener(
 
         speedValue.textContent =
             speechRate.toFixed(2)
-            + "×";
+            +
+            "×";
 
     }
 );
 
 
-/* =========================
+/* =========================================================
    LOAD BROWSER VOICES
-========================= */
+========================================================= */
 
 if(
     window.speechSynthesis
 ){
 
     window.speechSynthesis.onvoiceschanged =
-        () =>
+        () => {
+
             window.speechSynthesis
                 .getVoices();
+
+        };
 
 }
 
 
-/* =========================
+/* =========================================================
    INITIAL DISPLAY
-========================= */
+========================================================= */
 
 updateDisplay();
 
